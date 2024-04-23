@@ -1,9 +1,12 @@
 import os
 import os.path as osp
 import shutil
-from glob import glob
+from glob import glofrom spektral.datasets import load_off
+from spektral.utils import one_hot
 
-from joblib import Parallel, delayed
+graph = load_off(fname)
+graph.y = one_hot(class_i, n_out)
+return graphfrom joblib import Parallel, delayed
 from tqdm import tqdm
 
 from spektral.data import Dataset

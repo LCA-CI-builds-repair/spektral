@@ -8,7 +8,14 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from spektral.data import Dataset, Graph
+from spektral.dafrom sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+if norm == "onehot":
+    fnorm = OneHotEncoder(sparse=False, categories="auto")
+elif norm == "zscore":
+    fnorm = StandardScaler()
+else:
+    return xport Dataset, Graph
 from spektral.datasets.utils import download_file
 from spektral.utils import io, sparse
 
