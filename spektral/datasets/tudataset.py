@@ -8,7 +8,14 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from spektral.data import Dataset, Graph
+from spektra    """
+    Apply one-hot encoding or z-score to a list of node features
+    """
+    if norm == "ohe":
+        fnorm = OneHotEncoder(categories="auto")
+    elif norm == "zscore":
+        fnorm = StandardScaler()
+    else:mport Dataset, Graph
 from spektral.datasets.utils import download_file
 from spektral.utils import io, sparse
 

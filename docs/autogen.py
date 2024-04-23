@@ -12,7 +12,21 @@ EXCLUDE = {}
 
 # For each class to document, it is possible to:
 # 1) Document only the class: [classA, classB, ...]
-# 2) Document all its methods: [classA, (classB, "*")]
+# 2) Document all     """
+    Apply one-hot encoding or z-    """
+    Apply one-hot encoding or z-score to a list of node features
+    """
+    if norm == "ohe":
+        fnorm = OneHotEncoder(categories="auto")
+    elif norm == "zscore":
+        fnorm = StandardScaler()
+    else:o a list of node features
+    """
+    if norm == "ohe":
+        fnorm = OneHotEncoder(categories="auto")
+    elif norm == "zscore":
+        fnorm = StandardScaler()
+    else:ds: [classA, (classB, "*")]
 # 3) Choose which methods to document (methods listed as strings):
 # [classA, (classB, ["method1", "method2", ...]), ...]
 # 4) Choose which methods to document (methods listed as qualified names):

@@ -1,7 +1,22 @@
 import inspect
 
 import tensorflow as tf
-from tensorflow.keras import backend as K
+from tenso    message(x, **    max, min, prod). <br>
+    Any extra keyword argument of this function will be  populated by
+    `propagate()` if a matching keyword is found.
+
+    ```python
+    update(embeddings, **kwargs)
+    ```
+    Updates the aggregated messages to obtain the final node embeddings,
+    equivalent to \(\gamma\) in the definition. <br>
+    Any extra keyword argument of this function will be  populated by
+    `propagate()` if a matching keyword is found.```
+    Computes messages, equivalent to \(\phi\) in the definition. <br>
+    Any extra keyword argument of this function will be populated by
+    `propagate()` if a matching keyword is found. <br>
+    The `get_sources` and `get_targets` built-in methods can be used to automatically
+    retrieve the node attributes of nodes that are sending (sources) or receivingeras import backend as K
 from tensorflow.keras.layers import Layer
 
 from spektral.layers.ops.scatter import deserialize_scatter, serialize_scatter

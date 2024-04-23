@@ -7,7 +7,11 @@ from tensorflow.keras.layers import Layer
 from spektral.utils.keras import (
     deserialize_kwarg,
     is_keras_kwarg,
-    is_layer_kwarg,
+    is_layer        :param kwargs: additional keyword arguments; when overriding this
+        function, any keyword argument defined explicitly as `key=None` will be
+        automatically filled in when calling `pool(key=value)`.
+        :return: Tensor of integers of shape `(K, )`.
+        """g,
     serialize_kwarg,
 )
 
