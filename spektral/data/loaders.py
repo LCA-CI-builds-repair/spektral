@@ -1,7 +1,19 @@
 import numpy as np
 import tensorflow as tf
 
-from spektral.data.utils import (
+from spek# loaders.py
+
+class DataLoader:
+    def __init__(self, data_path):
+        self.data_path = data_path
+
+    def load_data(self):
+        # Implement data loading logic here
+        pass
+
+# Example usage
+data_loader = DataLoader('path/to/data')
+data = data_loader.load_data()ral.data.utils import (
     batch_generator,
     collate_labels_batch,
     collate_labels_disjoint,

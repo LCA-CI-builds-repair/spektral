@@ -1,6 +1,15 @@
 # Creating a Message-Passing Layer
 
-In this tutorial we go over the `MessagePassing` interface for creating GNN layers. 
+In this tutorial we go over the `MessagePassing` interface for c## Creating a New Layer
+
+To create a new layer in your software project, follow these steps:
+
+1. Define the new layer in your project structure.
+2. Implement the necessary functions and classes for the new layer.
+3. Integrate the new layer with existing modules.
+
+Here is an example of how you can create a new layer in your project:
+eating GNN layers. 
 
 This is a very flexible class that is based on three main functions: message, aggregate and update.
 By overriding these methods, you can define the behaviour of your own layers. 

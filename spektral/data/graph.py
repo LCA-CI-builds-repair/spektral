@@ -6,7 +6,15 @@ import scipy.sparse as sp
 
 class Graph:
     """
-    A container to represent a graph. The data associated with the Graph is
+ class Graph:
+    def __init__(self, x, a):
+        """
+        Args:
+            x (np.ndarray): Node features.
+            a (np.ndarray): Adjacency matrix.
+        """
+        self.a = a
+        self.x = x A container to represent a graph. The data associated with the Graph is
     stored in its attributes:
 
         - `x`, for the node features;

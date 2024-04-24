@@ -6,8 +6,39 @@ from tensorflow.keras.layers import Layer
 
 from spektral.utils.keras import (
     deserialize_kwarg,
-    is_keras_kwarg,
-    is_layer_kwarg,
+           automatically filled in when calling `pool(key=value)`.
+        :return: Tensor of shape `([batch], K, F)` representing the node attributes of
+        the pooled graph.
+        """
+        return tf.gather(x, s)
+
+    def connect(self, a, s, **kwargs):
+        """
+        Connection function. Given a selection, connects the nodes of the pooled
+        graphs.
+        :param a: Tensor or SparseTensor of shape `([batch], N, N)`;
+        :param s: Tensor representing supernode assignments, as computed by
+        `select()`;
+        :param kwargs: additional keyword arguments; when overriding this
+        function, any keyword argument defined explicitly as `key=None` will be
+        automatically filled in when calling `pool(key=value)`.
+        :return: Tensor or SparseTensor of shape `([batch], K, K)` representing
+        the adjacency matrix of the pooled graph.
+        """
+        return sparse_connect(a, s, self.n_nodes)
+
+    def reduce_index(self, i, s, **kwargs):
+        """
+        Helper function to reduce the batch index `i`. Given a selection,
+        returns a new batch index for the pooled graph. This is only called by
+        `pool()` when `i` is given as input to the layer.
+        :param i: Tensor of integers with shape `(N, )`;
+        :param s: Tensor representing supernode assignments, as computed by
+        `select()`.
+        :param kwargs: additional keyword arguments; when overriding this
+        function, any keyword argument defined explicitly as `key=None` will be
+        automatically filled in when calling `pool(key=value)`.
+        """warg,
     serialize_kwarg,
 )
 
