@@ -2,13 +2,19 @@ import glob
 import os
 import shutil
 from os import path as osp
-from urllib.error import URLError
+from urllib.error import URLErroimport numpy as np
+import os.path as osp
+import zipfile
 
-import numpy as np
+import requests
+from tqdm import tqdm
+
+from spektral.data import io, sparse, Graph
 import pandas as pd
+from urllib.error import URLError
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from spektral.data import Dataset, Graph
+# Existing code snippet remains the sameort Dataset, Graph
 from spektral.datasets.utils import download_file
 from spektral.utils import io, sparse
 

@@ -2,8 +2,14 @@ import copy
 import warnings
 from functools import partial
 
-import numpy as np
-import tensorflow as tf
+import numpy     def normalized_laplacian(A, symmetric=False):
+        r"""
+        Computes a normalized Laplacian of the given adjacency matrix as
+        \(\I - \D^{-1}\A\) or \(\I - \D^{-1/2}\A\D^{-1/2}\) (symmetric normalization).
+        :param A: rank 2 array or sparse matrix;
+        :param symmetric: boolean, compute symmetric normalization;
+        :return: the normalized Laplacian.
+        """mport tensorflow as tf
 from scipy import linalg
 from scipy import sparse as sp
 from scipy.sparse.linalg import ArpackNoConvergence

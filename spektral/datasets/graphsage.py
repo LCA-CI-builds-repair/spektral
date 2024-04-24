@@ -4,8 +4,58 @@ import os.path as osp
 import shutil
 
 import numpy as np
-import scipy.sparse as sp
-from networkx.readwrite import json_graph
+import scipimport os
+import os.path as osp
+import shutil
+import numpy as np
+from preprocess_data import preprocess    if isinstance(list(class_map.values())[0], list):
+        num_classes = len(list(class_map.values())[0])
+        y = np.zeros((n, num_classes), dtype=np.float32)
+        for k in class_map.keys():
+            y[id_map[k], :] = np.array(class_map[k])
+    else:
+        num_classes = len(set(class_map.values()))
+        y = np.zeros((n, num_classes), dtype=np.float32)
+        for k in class_map.keys():
+            y[id_map[k], class_map[k]] = 1
+
+    # Get train/val/test indexes
+    idx_va = np.array(
+        [id_map[k] for k in id_map if k in G.nodes and G.nodes[k]["val"]],
+        dtype=np.int32,
+    )
+    idx_te = np.array(
+        [id_map[k] for k in id_map if k in G.nodes and G.nodes[k]["test"]],
+        dtype=np.int32,
+    )
+    mask_tr = np.ones(n, dtype=bool)
+    mask_va = np.zeros(n, dtype=bool)
+    mask_te = np.zeros(n, dtype=bool)
+    mask_tr[idx_va] = False
+    mask_tr[idx_te] = False
+    mask_va[idx_va] = True
+    mask_te[idx_te] = Truesubfolder = osp.join(self.path, self.name)
+for filename in os.listdir(subfolder):
+    shutil.move(osp.join(subfolder, filename), osp.join(parent, filename))
+os.rmdir(subfolder)
+
+x, adj, y, mask_tr, mask_va, mask_te = preprocess_data(self.path, self.name)
+
+# Save pre-processed data
+npz_file = osp.join(self.path, self.name) + ".npz"
+adj = adj.tocoo()
+np.savez(
+    npz_file,
+    x=x,
+    adj_data=adj.data,
+    adj_row=adj.row,
+    adj_col=adj.col,
+    adj_shape=adj.shape,
+    y=y,
+    mask_tr=mask_tr,
+    mask_va=mask_va,
+    mask_te=mask_te,
+)tworkx.readwrite import json_graph
 
 from spektral.data import Dataset, Graph
 from spektral.data.dataset import DATASET_FOLDER

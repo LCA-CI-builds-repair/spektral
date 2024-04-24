@@ -1,7 +1,45 @@
 import inspect
 
 import tensorflow as tf
-from tensorflow.keras import backend as K
+from tenso    def message(x, **kwar    def update(embeddings, aggregate='sum', **kwargs):
+        """
+        Updates the aggregated messages to obtain the final node embeddings,
+        equivalent to \(\gamma\) in the definition.
+        
+        **Arguments**:
+        
+        - `embeddings`: tensor, the input node embeddings.
+        
+        - `aggregate`: string or callable, an aggregation function. This flag can be
+        used to control the behaviour of `aggregate()` without re-implementing it.
+        Supported aggregations: 'sum', 'mean', 'max', 'min', 'prod'.
+        If callable, the function must have the signature `foo(updates, indices, n_nodes)`
+        and return a rank 2 tensor with shape `(n_nodes, ...)`.
+        
+        - `kwargs`: additional keyword arguments specific to Keras' Layers, like
+        regularizers, initializers, constraints, etc.
+        """
+        Computes messages, equivalent to \(\phi\) in the definition.
+        
+        Any extra keyword argument of this function will be populated by
+        `propagate()` if a matching keyword is found.
+        The `get_sources` and `get_targets` built-in methods can be used to automatically
+        retrieve the node attributes of nodes that are sending (sources) or receiving
+        (targets) a message.
+        If you need direct access to the edge indices, you can use the `index_sources` and
+        `index_targets` attributes.
+        """
+    
+    def aggregate(messages, **kwargs):
+        """
+        Aggregates the messages, equivalent to \(\square\) in the definition.
+        
+        The behaviour of this function can also be controlled using the `aggregate`
+        keyword in the constructor of the layer (supported aggregations: sum, mean,
+        max, min, prod).
+        Any extra keyword argument of this function will be populated by
+        `propagate()` if a matching keyword is found.
+        """ackend as K
 from tensorflow.keras.layers import Layer
 
 from spektral.layers.ops.scatter import deserialize_scatter, serialize_scatter

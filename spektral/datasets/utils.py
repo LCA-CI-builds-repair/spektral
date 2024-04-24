@@ -1,4 +1,12 @@
-import os
+iimport os
+import os.path as osp
+import zipfile
+
+import requests
+from tqdm import tqdm
+
+_dataset_folder = osp.expanduser(os.path.join("~", "spektral", "datasets"))
+_config_path = osp.expanduser(os.path.join("~", "spektral", "config.json"))
 import os.path as osp
 import zipfile
 
