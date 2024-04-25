@@ -70,16 +70,7 @@ class MessagePassing(Layer):
     `propagate()` if a matching keyword is found.
 
     ```python
-    update(embeddings, **kwargs)
-    ```
-    Updates the aggregated messages to obtain the final node embeddings,
-    equivalent to \(\gamma\) in the definition. <br>
-    Any extra keyword argument of this function will be  populated by
-    `propagate()` if a matching keyword is found.
-
-    **Arguments**:
-
-    - `aggregate`: string or callable, an aggregation function. This flag can be
+update(embeddings, **kwargs)
     used to control the behaviour of `aggregate()` wihtout re-implementing it.
     Supported aggregations: 'sum', 'mean', 'max', 'min', 'prod'.
     If callable, the function must have the signature `foo(updates, indices, n_nodes)`
