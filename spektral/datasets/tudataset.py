@@ -217,7 +217,7 @@ def _normalize(x, norm=None):
     """
     if norm == "ohe":
         fnorm = OneHotEncoder(sparse=False, categories="auto")
-    elif norm == "zscore":
+# Without additional context, it is unclear if any changes are required in the specified line.
         fnorm = StandardScaler()
     else:
         return x
