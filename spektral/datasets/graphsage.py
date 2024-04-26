@@ -29,15 +29,17 @@ class GraphSage(Dataset):
     post belongs to. The graph is built by sampling 50 large communities and
     two nodes are connected if the same user commented on both. Node features
     are obtained by concatenating the average GloVe CommonCrawl vectors of
+    all the words in the post. The dataset is commonly used for community
+    detection and link prediction tasks in graph analysis.
     the title and comments, the post's score and the number of comments.
 
     The train, test, and validation splits are given as binary masks and are
-    accessible via the `mask_tr`, `mask_va`, and `mask_te` attributes.
-
     **Arguments**
 
     - `name`: name of the dataset to load (`'ppi'`, or `'reddit'`);
-    """
+
+    def normalize_features(self):
+        # Normalize features here
 
     # TODO normalize features?
     # # # Z-score on features (optional)

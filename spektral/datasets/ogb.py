@@ -1,8 +1,6 @@
 import numpy as np
-
 from spektral.data import Dataset, Graph
 from spektral.utils import sparse
-
 
 class OGB(Dataset):
     """
@@ -13,7 +11,10 @@ class OGB(Dataset):
     - `dataset`: an OGB library-agnostic dataset.
 
     """
-
+    
+    def __init__(self, dataset):
+        super(OGB, self).__init__()
+        self.dataset = dataset
     def __init__(self, dataset, **kwargs):
         self.dataset = dataset
         super().__init__(**kwargs)

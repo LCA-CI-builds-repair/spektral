@@ -94,14 +94,18 @@ class Citation(Dataset):
             x = _preprocess_features(x)
 
         if self.random_split:
-            # Throw away public splits and compute random ones like Shchur et al.
-            indices = np.arange(y.shape[0])
-            n_classes = y.shape[1]
-            idx_tr, idx_te, _, y_te = train_test_split(
-                indices, y, train_size=20 * n_classes, stratify=y
-            )
-            idx_va, idx_te = train_test_split(
-                idx_te, train_size=30 * n_classes, stratify=y_te
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+# Throw away public splits and compute random ones like Shchur et al.
+indices = np.arange(y.shape[0])
+n_classes = y.shape[1]
+idx_tr, idx_te, _, y_te = train_test_split(
+    indices, y, train_size=20 * n_classes, stratify=y
+)
+idx_va, idx_te = train_test_split(
+    idx_te, train_size=30 * n_classes, stratify=y_te
+)
             )
 
         # Adjacency matrix
@@ -132,16 +136,11 @@ class Citation(Dataset):
                 raise ValueError(
                     "Cannot download dataset ({} returned 404).".format(
                         self.url.format(f_name)
-                    )
-                )
-            with open(os.path.join(self.path, f_name), "wb") as out_file:
-                out_file.write(req.content)
+@staticmethod
+def available_datasets():
+    return ["cora", "citeseer", "pubmed"]
 
     @staticmethod
-    def available_datasets():
-        return ["cora", "citeseer", "pubmed"]
-
-
 class Cora(Citation):
     """
     Alias for `Citation('cora')`.

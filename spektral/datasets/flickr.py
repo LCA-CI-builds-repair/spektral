@@ -30,58 +30,79 @@ class Flickr(Dataset):
     role_id = "1htXCtuktuCW8TR8KiKfrFDAxUgekQoV7"
 
     def __init__(self, normalize_x=False, dtype=np.float32, **kwargs):
+import os
+import os.path as osp
+import json
+import numpy as np
+import scipy.sparse as sp
+from spektral.data import Graph
+from spektral.utils import label_to_one_hot, _preprocess_features
+
+class Flickr(Dataset):
+    def __init__(self, dtype='float32', normalize_x=True, **kwargs):
         self.dtype = dtype
         self.normalize_x = normalize_x
         super().__init__(**kwargs)
-
+        
+        self.adj_full_id = 'adj_full'
+        self.feats_id = 'feats'
+        self.class_map_id = 'class_map'
+        self.role_id = 'role'
+        
     def download(self):
         print("Downloading Flickr dataset.")
-        file_path = _download_url(self.url.format(self.adj_full_id), self.path)
-        os.rename(file_path, osp.join(self.path, "adj_full.npz"))
+        try:
+            file_path = _download_url(self.url.format(self.adj_full_id), self.path)
+            os.rename(file_path, osp.join(self.path, "adj_full.npz"))
 
-        file_path = _download_url(self.url.format(self.feats_id), self.path)
-        os.rename(file_path, osp.join(self.path, "feats.npy"))
+            file_path = _download_url(self.url.format(self.feats_id), self.path)
+            os.rename(file_path, osp.join(self.path, "feats.npy"))
 
-        file_path = _download_url(self.url.format(self.class_map_id), self.path)
-        os.rename(file_path, osp.join(self.path, "class_map.json"))
+            file_path = _download_url(self.url.format(self.class_map_id), self.path)
+            os.rename(file_path, osp.join(self.path, "class_map.json"))
 
-        file_path = _download_url(self.url.format(self.role_id), self.path)
-        os.rename(file_path, osp.join(self.path, "role.json"))
+            file_path = _download_url(self.url.format(self.role_id), self.path)
+            os.rename(file_path, osp.join(self.path, "role.json"))
+        except Exception as e:
+            print(f"Error downloading dataset: {e}")
 
     def read(self):
-        f = np.load(osp.join(self.path, "adj_full.npz"))
-        a = sp.csr_matrix((f["data"], f["indices"], f["indptr"]), f["shape"])
+        try:
+            f = np.load(osp.join(self.path, "adj_full.npz"))
+            a = sp.csr_matrix((f["data"], f["indices"], f["indptr"]), f["shape"])
 
-        x = np.load(osp.join(self.path, "feats.npy"))
+            x = np.load(osp.join(self.path, "feats.npy"))
 
-        if self.normalize_x:
-            print("Pre-processing node features")
-            x = _preprocess_features(x)
+            if self.normalize_x:
+                print("Pre-processing node features")
+                x = _preprocess_features(x)
 
-        y = np.zeros(x.shape[0])
-        with open(osp.join(self.path, "class_map.json")) as f:
-            class_map = json.load(f)
-            for key, item in class_map.items():
-                y[int(key)] = item
+            y = np.zeros(x.shape[0])
+            with open(osp.join(self.path, "class_map.json")) as f:
+                class_map = json.load(f)
+                for key, item in class_map.items():
+                    y[int(key)] = item
 
-        y = label_to_one_hot(y, np.unique(y))
+            y = label_to_one_hot(y, np.unique(y))
 
-        with open(osp.join(self.path, "role.json")) as f:
-            role = json.load(f)
+            with open(osp.join(self.path, "role.json")) as f:
+                role = json.load(f)
 
-        self.train_mask = np.zeros(x.shape[0], dtype=bool)
-        self.train_mask[np.array(role["tr"])] = 1
+            self.train_mask = np.zeros(x.shape[0], dtype=bool)
+            self.train_mask[np.array(role["tr"])] = 1
 
-        self.val_mask = np.zeros(x.shape[0], dtype=bool)
-        self.val_mask[np.array(role["va"])] = 1
+            self.val_mask = np.zeros(x.shape[0], dtype=bool)
+            self.val_mask[np.array(role["va"])] = 1
 
-        self.test_mask = np.zeros(x.shape[0], dtype=bool)
-        self.test_mask[np.array(role["te"])] = 1
+            self.test_mask = np.zeros(x.shape[0], dtype=bool)
+            self.test_mask[np.array(role["te"])] = 1
 
-        return [
-            Graph(
-                x=x.astype(self.dtype),
-                a=a.astype(self.dtype),
-                y=y.astype(self.dtype),
-            )
-        ]
+            return [
+                Graph(
+                    x=x.astype(self.dtype),
+                    a=a.astype(self.dtype),
+                    y=y.astype(self.dtype),
+                )
+            ]
+        except Exception as e:
+            print(f"Error reading dataset: {e}")

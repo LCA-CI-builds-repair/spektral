@@ -37,20 +37,30 @@ class MNIST(Dataset):
     """
 
     def __init__(self, p_flip=0.0, k=8, **kwargs):
+import numpy as np
+from tensorflow.keras.datasets import mnist as m
+
+MNIST_SIZE = 28
+
+class MNIST(Dataset):
+    def __init__(self, k, p_flip, **kwargs):
         self.a = None
         self.k = k
         self.p_flip = p_flip
         super().__init__(**kwargs)
 
     def read(self):
-        self.a = _mnist_grid_graph(self.k)
-        self.a = _flip_random_edges(self.a, self.p_flip)
+        try:
+            self.a = _mnist_grid_graph(self.k)
+            self.a = _flip_random_edges(self.a, self.p_flip)
 
-        (x_train, y_train), (x_test, y_test) = m.load_data()
-        x = np.vstack((x_train, x_test))
-        x = x / 255.0
-        y = np.concatenate((y_train, y_test), 0)
-        x = x.reshape(-1, MNIST_SIZE**2, 1)
+            (x_train, y_train), (x_test, y_test) = m.load_data()
+            x = np.vstack((x_train, x_test))
+            x = x / 255.0
+            y = np.concatenate((y_train, y_test), 0)
+            x = x.reshape(-1, MNIST_SIZE**2, 1)
+        except Exception as e:
+            print(f"Error reading MNIST dataset: {e}")
 
         return [Graph(x=x_, y=y_) for x_, y_ in zip(x, y)]
 

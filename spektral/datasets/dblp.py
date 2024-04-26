@@ -83,23 +83,36 @@ def _download_url(url, folder, log=False):
     path = osp.join(folder, filename)
 
     if osp.exists(path):  # pragma: no cover
+import sys
+import os
+import errno
+import ssl
+import urllib.request
+import os.path as osp
+
+class DBLP(Dataset):
+    def download(self, log=False):
+        filename = self.url.split("/")[-1]
+        path = osp.join(self.path, filename)
+
+        if osp.isfile(path):
+            if log:
+                print(f"Using existing file {filename}", file=sys.stderr)
+            return path
+
         if log:
-            print(f"Using existing file {filename}", file=sys.stderr)
+            print(f"Downloading {self.url}", file=sys.stderr)
+
+        try:
+            os.makedirs(osp.expanduser(osp.normpath(self.path)), exist_ok=True)
+        except OSError as e:
+            if e.errno != errno.EEXIST and osp.isdir(self.path):
+                raise e
+
+        context = ssl._create_unverified_context()
+        data = urllib.request.urlopen(self.url, context=context)
+
+        with open(path, "wb") as f:
+            f.write(data.read())
+
         return path
-
-    if log:
-        print(f"Downloading {url}", file=sys.stderr)
-
-    try:
-        os.makedirs(osp.expanduser(osp.normpath(folder)), exist_ok=True)
-    except OSError as e:
-        if e.errno != errno.EEXIST and osp.isdir(path):
-            raise e
-
-    context = ssl._create_unverified_context()
-    data = urllib.request.urlopen(url, context=context)
-
-    with open(path, "wb") as f:
-        f.write(data.read())
-
-    return path
