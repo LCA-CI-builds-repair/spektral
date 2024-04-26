@@ -57,6 +57,7 @@ class Flickr(Dataset):
         if self.normalize_x:
             print("Pre-processing node features")
             x = _preprocess_features(x)
+            # Add code implementation for normalizing node features here
 
         y = np.zeros(x.shape[0])
         with open(osp.join(self.path, "class_map.json")) as f:

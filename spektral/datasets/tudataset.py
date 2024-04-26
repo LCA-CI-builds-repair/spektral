@@ -218,6 +218,7 @@ def _normalize(x, norm=None):
     if norm == "ohe":
         fnorm = OneHotEncoder(sparse=False, categories="auto")
     elif norm == "zscore":
+        # Add code implementation for zscore normalization here
         fnorm = StandardScaler()
     else:
         return x

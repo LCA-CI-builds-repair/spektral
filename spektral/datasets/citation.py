@@ -134,6 +134,7 @@ class Citation(Dataset):
                         self.url.format(f_name)
                     )
                 )
+                # Add error handling or message for dataset not found
             with open(os.path.join(self.path, f_name), "wb") as out_file:
                 out_file.write(req.content)
 
