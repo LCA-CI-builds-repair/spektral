@@ -18,7 +18,6 @@ def normalize_A(A):
 
     return output
 
-
 def degrees(A):
     """
     Computes the degrees of each node in A, dealing with sparse A and batch mode
@@ -32,8 +31,6 @@ def degrees(A):
         D = tf.reduce_sum(A, axis=-1)
 
     return D
-
-
 def degree_matrix(A, return_sparse_batch=False):
     """
     Computes the degree matrix of A, deals with sparse A and batch mode
