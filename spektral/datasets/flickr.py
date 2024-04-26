@@ -29,13 +29,45 @@ class Flickr(Dataset):
     class_map_id = "1uxIkbtg5drHTsKt-PAsZZ4_yJmgFmle9"
     role_id = "1htXCtuktuCW8TR8KiKfrFDAxUgekQoV7"
 
+    def download(self):
+        _download_url(self.url.format(self.adj_full_id), osp.join(self.path, 'adj_full.npz'))
+        _download_url(self.url.format(self.feats_id), osp.join(self.path, 'feats.npz'))
+        _download_url(self.url.format(self.class_map_id), osp.join(self.path, 'class_map.npz'))
+        _download_url(self.url.format(self.role_id), osp.join(self.path, 'role.npz'))
+
+    def preprocess_features(self, x):
+        return _preprocess_features(x)
+
     def __init__(self, normalize_x=False, dtype=np.float32, **kwargs):
-        self.dtype = dtype
-        self.normalize_x = normalize_x
-        super().__init__(**kwargs)
+import os
+import os.path as osp
+import numpy as np
+import scipy.sparse as sp
+import json
+
+from spektral.data import Dataset, Graph
+from spektral.datasets.citation import _preprocess_features
+from spektral.datasets.dblp import _download_url
+from spektral.utils import label_to_one_hot
+
+class Flickr(Dataset):
+    """
+    The Flickr dataset from the [Zeng at al. (2019)](https://arxiv.org/abs/1907.04931) paper,
+    containing descriptions and common properties of images.
+
+    **Arguments**
+
+    - `normalize_x`: if True, normalize the features.
+    - `dtype`: numpy dtype of graph data.
+    """
+
+    url = "https://docs.google.com/uc?export=download&id={}&confirm=t"
+    adj_full_id = "1crmsTbd1-2sEXsGwa2IKnIB7Zd3TmUsy"
+    feats_id = "1join-XdvX3anJU_MLVtick7MgeAQiWIZ"
+    class_map_id = "1uxIkbtg5drHTsKt-PAsZZ4_yJmgFmle9"
+    role_id = "1htXCtuktuCW8TR8KiKfrFDAxUgekQoV7"
 
     def download(self):
-        print("Downloading Flickr dataset.")
         file_path = _download_url(self.url.format(self.adj_full_id), self.path)
         os.rename(file_path, osp.join(self.path, "adj_full.npz"))
 
@@ -84,4 +116,8 @@ class Flickr(Dataset):
                 a=a.astype(self.dtype),
                 y=y.astype(self.dtype),
             )
+        ]
+
+        return [
+# Add the necessary changes to the code snippet here
         ]

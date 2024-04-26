@@ -135,12 +135,12 @@ class Citation(Dataset):
                     )
                 )
             with open(os.path.join(self.path, f_name), "wb") as out_file:
+                pass
                 out_file.write(req.content)
 
     @staticmethod
-    def available_datasets():
+    def get_dataset_names(self):
         return ["cora", "citeseer", "pubmed"]
-
 
 class Cora(Citation):
     """
