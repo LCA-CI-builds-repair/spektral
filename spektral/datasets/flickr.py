@@ -74,14 +74,13 @@ class Flickr(Dataset):
 
         self.val_mask = np.zeros(x.shape[0], dtype=bool)
         self.val_mask[np.array(role["va"])] = 1
-
         self.test_mask = np.zeros(x.shape[0], dtype=bool)
         self.test_mask[np.array(role["te"])] = 1
 
-        return [
-            Graph(
-                x=x.astype(self.dtype),
-                a=a.astype(self.dtype),
-                y=y.astype(self.dtype),
-            )
-        ]
+return [
+    Graph(
+        x=x.astype(self.dtype),
+        a=a.astype(self.dtype),
+        y=y.astype(self.dtype),
+    )
+]

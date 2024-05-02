@@ -157,7 +157,6 @@ class Citeseer(Citation):
     """
     Alias for `Citation('citeseer')`.
     """
-
     def __init__(self, random_split=False, normalize_x=False, **kwargs):
         super().__init__(
             "citeseer", random_split=random_split, normalize_x=normalize_x, **kwargs
