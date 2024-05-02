@@ -78,7 +78,6 @@ class MessagePassing(Layer):
     `propagate()` if a matching keyword is found.
 
     **Arguments**:
-
     - `aggregate`: string or callable, an aggregation function. This flag can be
     used to control the behaviour of `aggregate()` wihtout re-implementing it.
     Supported aggregations: 'sum', 'mean', 'max', 'min', 'prod'.

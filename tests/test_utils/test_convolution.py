@@ -172,7 +172,6 @@ def test_line_graph():
 
     graph_incidence = nx.incidence_matrix(graph).toarray()
     true_line_graph_adj = nx.to_numpy_array(line_graph)
-
     # Act.
     got_line_graph_adj = convolution.line_graph(graph_incidence).numpy()
 
