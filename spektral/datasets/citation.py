@@ -180,9 +180,6 @@ def _read_file(path, name, suffix):
     if suffix == "test.index":
         return np.loadtxt(full_fname)
 
-    return load_binary(full_fname)
-
-
 def _idx_to_mask(idx, l):
     mask = np.zeros(l)
     mask[idx] = 1

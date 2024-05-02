@@ -203,98 +203,96 @@ class SRCPool(Layer):
         :return: Tensor or SparseTensor of shape `([batch], K, K)` representing
         the adjacency matrix of the pooled graph.
         """
-        return sparse_connect(a, s, self.n_nodes)
+def reduce_index(self, i, s, **kwargs):
+    """
+    Helper function to reduce the batch index `i`. Given a selection,
+    returns a new batch index for the pooled graph. This is only called by
+    `pool()` when `i` is given as input to the layer.
+    :param i: Tensor of integers with shape `(N, )`;
+    :param s: Tensor representing supernode assignments, as computed by
+    `select()`.
+    :param kwargs: additional keyword arguments; when overriding this
+    function, any keyword argument defined explicitly as `key=None` will be
+    automatically filled in when calling `pool(key=value)`.
+    :return: Tensor of integers of shape `(K, )`.
+    """
+    return tf.gather(i, s)
 
-    def reduce_index(self, i, s, **kwargs):
-        """
-        Helper function to reduce the batch index `i`. Given a selection,
-        returns a new batch index for the pooled graph. This is only called by
-        `pool()` when `i` is given as input to the layer.
-        :param i: Tensor of integers with shape `(N, )`;
-        :param s: Tensor representing supernode assignments, as computed by
-        `select()`.
-        :param kwargs: additional keyword arguments; when overriding this
-        function, any keyword argument defined explicitly as `key=None` will be
-        automatically filled in when calling `pool(key=value)`.
-        :return: Tensor of integers of shape `(K, )`.
-        """
-        return tf.gather(i, s)
-
-    @staticmethod
-    def _get_kwargs(x, a, i, signature, kwargs):
-        output = {}
-        for k in signature.keys():
-            if signature[k].default is inspect.Parameter.empty or k == "kwargs":
-                pass
-            elif k == "x":
-                output[k] = x
-            elif k == "a":
-                output[k] = a
-            elif k == "i":
-                output[k] = i
-            elif k in kwargs:
-                output[k] = kwargs[k]
-            else:
-                raise ValueError("Missing key {} for signature {}".format(k, signature))
-
-        return output
-
-    def get_inputs(self, inputs):
-        if len(inputs) == 3:
-            x, a, i = inputs
-            if K.ndim(i) == 2:
-                i = i[:, 0]
-            assert K.ndim(i) == 1, "i must have rank 1"
-        elif len(inputs) == 2:
-            x, a = inputs
-            i = None
+@staticmethod
+def _get_kwargs(x, a, i, signature, kwargs):
+    output = {}
+    for k in signature.keys():
+        if signature[k].default is inspect.Parameter.empty or k == "kwargs":
+            pass
+        elif k == "x":
+            output[k] = x
+        elif k == "a":
+            output[k] = a
+        elif k == "i":
+            output[k] = i
+        elif k in kwargs:
+            output[k] = kwargs[k]
         else:
-            raise ValueError(
-                "Expected 2 or 3 inputs tensors (x, a, i), got {}.".format(len(inputs))
-            )
+            raise ValueError("Missing key {} for signature {}".format(k, signature))
 
-        self.n_nodes = tf.shape(x)[-2]
+    return output
 
-        return x, a, i
+def get_inputs(self, inputs):
+    if len(inputs) == 3:
+        x, a, i = inputs
+        if K.ndim(i) == 2:
+            i = i[:, 0]
+        assert K.ndim(i) == 1, "i must have rank 1"
+    elif len(inputs) == 2:
+        x, a = inputs
+        i = None
+    else:
+        raise ValueError(
+            "Expected 2 or 3 inputs tensors (x, a, i), got {}.".format(len(inputs))
+        )
 
-    def get_outputs(self, x_pool, a_pool, i_pool, s):
-        output = [x_pool, a_pool]
-        if i_pool is not None:
-            output.append(i_pool)
-        if self.return_selection:
-            output.append(s)
+    self.n_nodes = tf.shape(x)[-2]
 
-        return output
+    return x, a, i
 
-    def get_config(self):
-        config = {
-            "return_selection": self.return_selection,
-        }
-        for key in self.kwargs_keys:
-            config[key] = serialize_kwarg(key, getattr(self, key))
-        base_config = super().get_config()
-        return {**base_config, **config}
+def get_outputs(self, x_pool, a_pool, i_pool, s):
+    output = [x_pool, a_pool]
+    if i_pool is not None:
+        output.append(i_pool)
+    if self.return_selection:
+        output.append(s)
 
-    def compute_mask(self, inputs, mask=None):
-        # After pooling all nodes are always valid
-        return None
+    return output
 
-    @property
-    def n_nodes(self):
-        if self._n_nodes is None:
-            raise ValueError(
-                "self.n_nodes has not been defined. Have you called "
-                "self.get_inputs(inputs) at the beginning of call()?"
-            )
-        return self._n_nodes
+def get_config(self):
+    config = {
+        "return_selection": self.return_selection,
+    }
+    for key in self.kwargs_keys:
+        config[key] = serialize_kwarg(key, getattr(self, key))
+    base_config = super().get_config()
+    return {**base_config, **config}
 
-    @n_nodes.setter
-    def n_nodes(self, value):
-        self._n_nodes = value
+def compute_mask(self, inputs, mask=None):
+    # After pooling all nodes are always valid
+    return None
 
-    @n_nodes.deleter
-    def n_nodes(self):
-        self._n_nodes = None
+@property
+def n_nodes(self):
+    if self._n_nodes is None:
+        raise ValueError(
+            "self.n_nodes has not been defined. Have you called "
+            "self.get_inputs(inputs) at the beginning of call()?"
+        )
+    return self._n_nodes
+
+@n_nodes.setter
+def n_nodes(self, value):
+    self._n_nodes = value
+
+@n_nodes.deleter
+def n_nodes(self):
+    self._n_nodes = None
 
 
 def sparse_connect(A, S, N):

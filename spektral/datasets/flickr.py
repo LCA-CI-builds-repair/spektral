@@ -51,13 +51,14 @@ class Flickr(Dataset):
     def read(self):
         f = np.load(osp.join(self.path, "adj_full.npz"))
         a = sp.csr_matrix((f["data"], f["indices"], f["indptr"]), f["shape"])
+import numpy as np
+import os.path as osp
 
         x = np.load(osp.join(self.path, "feats.npy"))
 
         if self.normalize_x:
             print("Pre-processing node features")
             x = _preprocess_features(x)
-
         y = np.zeros(x.shape[0])
         with open(osp.join(self.path, "class_map.json")) as f:
             class_map = json.load(f)
@@ -77,11 +78,11 @@ class Flickr(Dataset):
 
         self.test_mask = np.zeros(x.shape[0], dtype=bool)
         self.test_mask[np.array(role["te"])] = 1
-
-        return [
-            Graph(
-                x=x.astype(self.dtype),
-                a=a.astype(self.dtype),
-                y=y.astype(self.dtype),
-            )
-        ]
+# Assuming this code snippet is part of a method or function
+return [
+    Graph(
+        x=x.astype(self.dtype),
+        a=a.astype(self.dtype),
+        y=y.astype(self.dtype),
+    )
+]

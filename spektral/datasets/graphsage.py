@@ -31,12 +31,12 @@ class GraphSage(Dataset):
     are obtained by concatenating the average GloVe CommonCrawl vectors of
     the title and comments, the post's score and the number of comments.
 
-    The train, test, and validation splits are given as binary masks and are
-    accessible via the `mask_tr`, `mask_va`, and `mask_te` attributes.
+The train, test, and validation splits are given as binary masks and are
+accessible via the `mask_tr`, `mask_va`, and `mask_te` attributes.
 
-    **Arguments**
+**Arguments**
 
-    - `name`: name of the dataset to load (`'ppi'`, or `'reddit'`);
+- `name`: name of the dataset to load (`'ppi'`, or `'reddit'`);
     """
 
     # TODO normalize features?
