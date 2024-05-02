@@ -104,6 +104,8 @@ class Citation(Dataset):
                 idx_te, train_size=30 * n_classes, stratify=y_te
             )
 
+import networkx as nx
+
         # Adjacency matrix
         a = nx.adjacency_matrix(nx.from_dict_of_lists(graph))  # CSR
         a.setdiag(0)
@@ -115,8 +117,10 @@ class Citation(Dataset):
         self.mask_te = _idx_to_mask(idx_te, y.shape[0])
 
         return [
-            Graph(
-                x=x.astype(self.dtype),
+import numpy as np
+import os
+import requests
+
                 a=a.astype(self.dtype),
                 y=y.astype(self.dtype),
             )
@@ -132,13 +136,9 @@ class Citation(Dataset):
                 raise ValueError(
                     "Cannot download dataset ({} returned 404).".format(
                         self.url.format(f_name)
+                    "Cannot download dataset ({} returned 404).".format(
+                        self.url.format(f_name)
                     )
-                )
-            with open(os.path.join(self.path, f_name), "wb") as out_file:
-                out_file.write(req.content)
-
-    @staticmethod
-    def available_datasets():
         return ["cora", "citeseer", "pubmed"]
 
 
@@ -148,10 +148,10 @@ class Cora(Citation):
     """
 
     def __init__(self, random_split=False, normalize_x=False, **kwargs):
-        super().__init__(
-            "cora", random_split=random_split, normalize_x=normalize_x, **kwargs
-        )
-
+class Cora(Citation):
+    """
+    Alias for `Citation('cora')`.
+    """
 
 class Citeseer(Citation):
     """
@@ -160,9 +160,9 @@ class Citeseer(Citation):
 
     def __init__(self, random_split=False, normalize_x=False, **kwargs):
         super().__init__(
-            "citeseer", random_split=random_split, normalize_x=normalize_x, **kwargs
-        )
-
+    """
+    Alias for `Citation('citeseer')`.
+    """
 
 class Pubmed(Citation):
     """
@@ -171,11 +171,14 @@ class Pubmed(Citation):
 
     def __init__(self, random_split=False, normalize_x=False, **kwargs):
         super().__init__(
-            "pubmed", random_split=random_split, normalize_x=normalize_x, **kwargs
-        )
+    """
+    Alias for `Citation('pubmed')`.
+    """
 
+    def __init__(self, random_split=False, normalize_x=False, **kwargs):
+import numpy as np
+import scipy.sparse as sp
 
-def _read_file(path, name, suffix):
     full_fname = os.path.join(path, "ind.{}.{}".format(name, suffix))
     if suffix == "test.index":
         return np.loadtxt(full_fname)

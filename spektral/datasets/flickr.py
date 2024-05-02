@@ -26,6 +26,8 @@ class Flickr(Dataset):
 
     adj_full_id = "1crmsTbd1-2sEXsGwa2IKnIB7Zd3TmUsy"
     feats_id = "1join-XdvX3anJU_MLVtick7MgeAQiWIZ"
+import numpy as np
+
     class_map_id = "1uxIkbtg5drHTsKt-PAsZZ4_yJmgFmle9"
     role_id = "1htXCtuktuCW8TR8KiKfrFDAxUgekQoV7"
 
@@ -58,8 +60,10 @@ class Flickr(Dataset):
             print("Pre-processing node features")
             x = _preprocess_features(x)
 
-        y = np.zeros(x.shape[0])
-        with open(osp.join(self.path, "class_map.json")) as f:
+import numpy as np
+import os
+import json
+
             class_map = json.load(f)
             for key, item in class_map.items():
                 y[int(key)] = item
@@ -74,6 +78,8 @@ class Flickr(Dataset):
 
         self.val_mask = np.zeros(x.shape[0], dtype=bool)
         self.val_mask[np.array(role["va"])] = 1
+        self.val_mask = np.zeros(x.shape[0], dtype=bool)
+        self.val_mask[np.array(role["va"])] = 1
 
         self.test_mask = np.zeros(x.shape[0], dtype=bool)
         self.test_mask[np.array(role["te"])] = 1
@@ -82,6 +88,6 @@ class Flickr(Dataset):
             Graph(
                 x=x.astype(self.dtype),
                 a=a.astype(self.dtype),
-                y=y.astype(self.dtype),
-            )
-        ]
+import numpy as np
+import os
+import json
