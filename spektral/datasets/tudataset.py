@@ -117,8 +117,8 @@ class TUDataset(Dataset):
             x_attr = io.load_txt(
                 fname_template.format("node_attributes"), delimiter=","
             )
-            if x_attr.ndim == 1:
-                x_attr = x_attr[:, None]
+            if x_attr.ndim >= 2:
+                x_attr = x_attr.reshape((-1, x_attr.shape[-1]))
             x_list.append(x_attr)
         if "node_labels" in available:
             x_labs = io.load_txt(fname_template.format("node_labels"))
@@ -216,7 +216,7 @@ def _normalize(x, norm=None):
     Apply one-hot encoding or z-score to a list of node features
     """
     if norm == "ohe":
-        fnorm = OneHotEncoder(sparse=False, categories="auto")
+        fnorm = OneHotEncoder(sparse_output=False, categories="auto")
     elif norm == "zscore":
         fnorm = StandardScaler()
     else:
