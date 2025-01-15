@@ -216,7 +216,8 @@ def _normalize(x, norm=None):
     Apply one-hot encoding or z-score to a list of node features
     """
     if norm == "ohe":
-        fnorm = OneHotEncoder(sparse=False, categories="auto")
+        from sklearn.preprocessing import OneHotEncoder as _OneHotEncoder
+        fnorm = _OneHotEncoder(handle_unknown="ignore")  # Remove 'sparse' parameter
     elif norm == "zscore":
         fnorm = StandardScaler()
     else:
