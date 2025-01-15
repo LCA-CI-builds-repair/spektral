@@ -1,6 +1,6 @@
 name: Run examples
 
-on: [push, pull_request]
+on: push
 
 jobs:
   build:
@@ -44,3 +44,7 @@ jobs:
           python $f
         done
         cd ..
+
+env:
+  PIP_INDEX_URL: https://pypi-wayback-449168051873.europe-west3.run.app/2024-01-21
+  UV_INDEX_URL: https://pypi-wayback-449168051873.europe-west3.run.app/2024-01-21
