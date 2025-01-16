@@ -219,6 +219,8 @@ def _normalize(x, norm=None):
         fnorm = OneHotEncoder(sparse=False, categories="auto")
     elif norm == "zscore":
         fnorm = StandardScaler()
+    elif norm == "ohe" and "node_labels" not in available:
+        fnorm = OneHotEncoder(sparse=False, categories="auto")
     else:
         return x
     return fnorm.fit_transform(x)
