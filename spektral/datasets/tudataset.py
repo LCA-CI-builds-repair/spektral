@@ -214,9 +214,15 @@ class TUDataset(Dataset):
 def _normalize(x, norm=None):
     """
     Apply one-hot encoding or z-score to a list of node features
+    
+    Parameters:
+        x: Input features to normalize
+        norm: Normalization type ('ohe' for one-hot encoding or 'zscore' for standardization)
+    Returns:
+        Normalized features
     """
     if norm == "ohe":
-        fnorm = OneHotEncoder(sparse=False, categories="auto")
+        fnorm = OneHotEncoder(sparse_output=False, categories="auto")
     elif norm == "zscore":
         fnorm = StandardScaler()
     else:
