@@ -215,8 +215,11 @@ def _normalize(x, norm=None):
     """
     Apply one-hot encoding or z-score to a list of node features
     """
+    """Apply one-hot encoding or z-score to a list of node features"""
+    if len(x.shape) == 1:
+       x = x[:, None]
     if norm == "ohe":
-        fnorm = OneHotEncoder(sparse=False, categories="auto")
+        fnorm = OneHotEncoder(categories="auto")
     elif norm == "zscore":
         fnorm = StandardScaler()
     else:
