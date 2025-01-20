@@ -1,11 +1,21 @@
 name: Run examples
 
-on: [push, pull_request]
+on: push
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    services:
+
+      pypi_wayback:
+
+        image: ghcr.io/waleko/pypi-wayback
+
+        ports:
+
+        - 8629:8080
 
     steps:
     - uses: actions/checkout@v2
@@ -44,3 +54,7 @@ jobs:
           python $f
         done
         cd ..
+
+env:
+  PIP_INDEX_URL: http://localhost:8629/2024-01-21
+  UV_INDEX_URL: http://localhost:8629/2024-01-21
