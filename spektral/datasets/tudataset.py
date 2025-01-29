@@ -125,7 +125,7 @@ class TUDataset(Dataset):
             if x_labs.ndim == 1:
                 x_labs = x_labs[:, None]
             x_labs = np.concatenate(
-                [_normalize(xl_[:, None], "ohe") for xl_ in x_labs.T], -1
+                [OneHotEncoder(sparse=False, categories="auto").fit_transform(xl_[:, None]) for xl_ in x_labs.T], -1
             )
             x_list.append(x_labs)
         if len(x_list) > 0:
@@ -152,9 +152,10 @@ class TUDataset(Dataset):
             if e_labs.ndim == 1:
                 e_labs = e_labs[:, None]
             e_labs = e_labs[mask]
-            e_labs = np.concatenate(
-                [_normalize(el_[:, None], "ohe") for el_ in e_labs.T], -1
-            )
+            e_labs = np.concatenate([
+                OneHotEncoder(sparse=False, categories="auto").fit_transform(el_[:, None])
+                for el_ in e_labs.T
+            ], -1)
             e_list.append(e_labs)
         if len(e_list) > 0:
             e_available = True
@@ -185,7 +186,7 @@ class TUDataset(Dataset):
             labels = io.load_txt(fname_template.format("graph_attributes"))
         elif "graph_labels" in available:
             labels = io.load_txt(fname_template.format("graph_labels"))
-            labels = _normalize(labels[:, None], "ohe")
+            labels = OneHotEncoder(sparse=False, categories="auto").fit_transform(labels[:, None])
         else:
             raise ValueError("No labels available for dataset {}".format(self.name))
 
@@ -209,16 +210,3 @@ class TUDataset(Dataset):
             # No internet, don't panic
             print("Could not read URL {}".format(url))
             return []
-
-
-def _normalize(x, norm=None):
-    """
-    Apply one-hot encoding or z-score to a list of node features
-    """
-    if norm == "ohe":
-        fnorm = OneHotEncoder(sparse=False, categories="auto")
-    elif norm == "zscore":
-        fnorm = StandardScaler()
-    else:
-        return x
-    return fnorm.fit_transform(x)
