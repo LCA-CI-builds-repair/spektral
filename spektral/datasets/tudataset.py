@@ -125,7 +125,7 @@ class TUDataset(Dataset):
             if x_labs.ndim == 1:
                 x_labs = x_labs[:, None]
             x_labs = np.concatenate(
-                [_normalize(xl_[:, None], "ohe") for xl_ in x_labs.T], -1
+                [_normalize(xl_[:, None], "ohe").toarray() for xl_ in x_labs.T], -1
             )
             x_list.append(x_labs)
         if len(x_list) > 0:
@@ -216,7 +216,7 @@ def _normalize(x, norm=None):
     Apply one-hot encoding or z-score to a list of node features
     """
     if norm == "ohe":
-        fnorm = OneHotEncoder(sparse=False, categories="auto")
+        fnorm = OneHotEncoder(sparse=True, handle_unknown="ignore")
     elif norm == "zscore":
         fnorm = StandardScaler()
     else:
