@@ -214,9 +214,26 @@ class TUDataset(Dataset):
 def _normalize(x, norm=None):
     """
     Apply one-hot encoding or z-score to a list of node features
+    
+    Parameters
+    ----------
+    x : array-like
+        Features to normalize
+    norm : str
+        Normalization type ('ohe' for one-hot encoding or 'zscore' for standardization)
+    
+    Returns
+    -------
+    array-like
+        Normalized features
     """
     if norm == "ohe":
-        fnorm = OneHotEncoder(sparse=False, categories="auto")
+        try:
+            # Try new scikit-learn API
+            fnorm = OneHotEncoder(sparse_output=False, categories="auto")
+        except TypeError:
+            # Fallback for older versions
+            fnorm = OneHotEncoder(sparse=False, categories="auto")
     elif norm == "zscore":
         fnorm = StandardScaler()
     else:
